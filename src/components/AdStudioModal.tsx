@@ -24,6 +24,9 @@ import {
   Eye,
   Columns3,
   Image as ImageIcon,
+  Code2,
+  CheckCircle2,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface AdStudioModalProps {
@@ -40,9 +43,10 @@ export const AdStudioModal: React.FC<AdStudioModalProps> = ({
   onSave,
 }) => {
   const [draft, setDraft] = useState<AdCreative>(creative);
-  const [activeTab, setActiveTab] = useState<'content' | 'visuals' | 'presets'>('content');
+  const [activeTab, setActiveTab] = useState<'content' | 'visuals' | 'presets' | 'script'>('content');
   const [compareMode, setCompareMode] = useState<boolean>(false);
   const [copiedNotification, setCopiedNotification] = useState<boolean>(false);
+  const [copiedScript, setCopiedScript] = useState<boolean>(false);
 
   // Sync draft when opened or creative changes
   React.useEffect(() => {
@@ -159,36 +163,47 @@ Image: ${draft.imageUrl}
           {/* Controls Column (5 cols) */}
           <div className="lg:col-span-5 border-r border-slate-200 dark:border-white/10 flex flex-col overflow-y-auto p-5 bg-slate-50/50 dark:bg-[#0e1014] space-y-6">
             {/* Tabs for Organization */}
-            <div className="flex rounded-xl bg-slate-200/80 dark:bg-neutral-900 p-1 border border-slate-300 dark:border-white/10">
+            <div className="flex rounded-xl bg-slate-200/80 dark:bg-neutral-900 p-1 border border-slate-300 dark:border-white/10 gap-0.5">
               <button
                 onClick={() => setActiveTab('content')}
-                className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer ${
+                className={`flex-1 py-1.5 px-2 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer text-center ${
                   activeTab === 'content'
                     ? 'bg-white text-slate-950 shadow-sm'
                     : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
-                Textes & Offre
+                Textes
               </button>
               <button
                 onClick={() => setActiveTab('visuals')}
-                className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer ${
+                className={`flex-1 py-1.5 px-2 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer text-center ${
                   activeTab === 'visuals'
                     ? 'bg-white text-slate-950 shadow-sm'
                     : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
-                Visuel & Couleurs
+                Visuel
               </button>
               <button
                 onClick={() => setActiveTab('presets')}
-                className={`flex-1 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer ${
+                className={`flex-1 py-1.5 px-2 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer text-center ${
                   activeTab === 'presets'
                     ? 'bg-white text-slate-950 shadow-sm'
                     : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
                 Modèles
+              </button>
+              <button
+                onClick={() => setActiveTab('script')}
+                className={`flex-1 py-1.5 px-2 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer text-center flex items-center justify-center gap-1 ${
+                  activeTab === 'script'
+                    ? 'bg-white text-slate-950 shadow-sm font-extrabold'
+                    : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
+                }`}
+              >
+                <Code2 className="w-3 h-3 text-red-600" />
+                <span>Script Pub</span>
               </button>
             </div>
 
@@ -534,6 +549,91 @@ Image: ${draft.imageUrl}
                         <p className="text-[11px] text-slate-500 dark:text-neutral-400">{preset.description}</p>
                       </div>
                     ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: EXTERNAL AD SCRIPT MANAGEMENT */}
+            {activeTab === 'script' && (
+              <div className="space-y-5 text-xs">
+                {/* Active Status Badge */}
+                <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-600/40 text-emerald-900 dark:text-emerald-200">
+                  <div className="flex items-center gap-2 mb-1.5 font-bold uppercase tracking-wider text-xs">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Script Publicitaire Afders Actif</span>
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-emerald-800 dark:text-emerald-300">
+                    Le code publicitaire a été injecté avec succès dans l'en-tête (<code>&lt;head&gt;</code>) de votre site. Il est chargé automatiquement à chaque visite.
+                  </p>
+                </div>
+
+                {/* Script Code Snippet */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-slate-700 dark:text-neutral-300 font-bold uppercase tracking-wider text-[11px]">
+                      Code du Script Intégré :
+                    </label>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText('<script data-cfasync="false" src="https://afders.org/1/169fa6c8c40e592dd678829f10e27da2"></script>');
+                        setCopiedScript(true);
+                        setTimeout(() => setCopiedScript(false), 2500);
+                      }}
+                      className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+                    >
+                      {copiedScript ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedScript ? 'Copié !' : 'Copier'}</span>
+                    </button>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-[11px] border border-slate-800 break-all leading-relaxed shadow-inner">
+                    <code>&lt;script data-cfasync="false" src="https://afders.org/1/169fa6c8c40e592dd678829f10e27da2"&gt;&lt;/script&gt;</code>
+                  </div>
+                </div>
+
+                {/* Configuration Details */}
+                <div className="space-y-3 p-4 rounded-xl bg-white dark:bg-neutral-900/70 border border-slate-200 dark:border-white/10 shadow-sm">
+                  <div className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+                    Paramètres Techniques du Tag
+                  </div>
+
+                  <div className="space-y-2 text-[11px] text-slate-600 dark:text-neutral-300">
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="text-slate-900 dark:text-white">data-cfasync="false" :</strong> Force l'exécution immédiate sans blocage Cloudflare RocketLoader.
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="text-slate-900 dark:text-white">Emplacement &lt;head&gt; :</strong> Initialisation prioritaire avant le chargement des composants UI.
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="text-slate-900 dark:text-white">Réseau Afders :</strong> Diffusion des annonces, bannières et formats monétisation automatisés.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Verification Check */}
+                <div className="pt-2">
+                  <div className="p-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-red-600" />
+                      <span className="font-semibold text-slate-800 dark:text-neutral-200">
+                        Vérification DOM en temps réel :
+                      </span>
+                    </div>
+                    <span className="font-mono text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-700">
+                      Tag Détecté
+                    </span>
                   </div>
                 </div>
               </div>
