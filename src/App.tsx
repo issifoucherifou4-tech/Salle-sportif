@@ -12,9 +12,10 @@ import { PassBookingModal } from './components/PassBookingModal';
 import { GymHallsSection } from './components/GymHallsSection';
 import { LogoIntegrationModal } from './components/LogoIntegrationModal';
 import { BiceaAdSlot } from './components/BiceaAdSlot';
+import { LeaderboardBanner } from './components/LeaderboardBanner';
 import { DEFAULT_AD_CREATIVE } from './data/mockGymData';
 import { AdCreative, GymClass, MembershipPlan, GymHall } from './types/gym';
-import { Sliders, Sparkles, Check, ArrowUp, Code2 } from 'lucide-react';
+import { Sliders, Sparkles, Check, ArrowUp, Code2, User } from 'lucide-react';
 
 export default function App() {
   const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
@@ -161,6 +162,12 @@ export default function App() {
           onOpenStudio={() => setIsStudioOpen(true)}
         />
 
+        {/* 728x90 Leaderboard Ad Banner (Bicea) */}
+        <LeaderboardBanner
+          onOpenStudio={() => setIsStudioOpen(true)}
+          onOpenAccount={() => setIsLogoModalOpen(true)}
+        />
+
         {/* The 5 Sports & Gym Halls Section (Salles 1 à 5) with direct ad activation */}
         <GymHallsSection
           onApplyHallToAd={handleApplyHallToAd}
@@ -194,10 +201,10 @@ export default function App() {
         <button
           onClick={() => setIsLogoModalOpen(true)}
           className="flex items-center gap-2 px-3.5 py-3 bg-white dark:bg-neutral-900 text-slate-800 dark:text-neutral-200 font-athletic text-xs uppercase tracking-wider font-extrabold rounded-full shadow-xl border border-slate-200 dark:border-white/20 transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
-          title="Intégrer le logo ou le badge du club sur votre site"
+          title="Accéder à Mon Compte, régies publicitaires et intégration du logo"
         >
-          <Code2 className="w-4 h-4 text-red-600" />
-          <span className="hidden sm:inline">Intégrer Logo</span>
+          <User className="w-4 h-4 text-red-600" />
+          <span className="hidden sm:inline">Mon Compte</span>
         </button>
 
         <button
@@ -226,10 +233,11 @@ export default function App() {
         onSave={handleSaveCreative}
       />
 
-      {/* Logo & Widget Integration Modal */}
+      {/* Mon Compte, Logo & Widget Integration Modal */}
       <LogoIntegrationModal
         isOpen={isLogoModalOpen}
         onClose={() => setIsLogoModalOpen(false)}
+        onOpenStudio={() => setIsStudioOpen(true)}
       />
 
       {/* Booking / Pass Modal */}

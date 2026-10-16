@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sliders, Sun, Moon, Share2, Code2 } from 'lucide-react';
+import { Sliders, Sun, Moon, Share2, Code2, User } from 'lucide-react';
 import { VortexLogo } from './VortexLogo';
 
 interface NavbarProps {
@@ -60,14 +60,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
           </button>
 
-          {/* Logo & Widget Embed trigger button */}
+          {/* Mon Compte & Monétisation trigger button */}
           <button
             onClick={onOpenLogoIntegration}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-bold tracking-wider uppercase text-slate-800 dark:text-neutral-200 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            title="Intégrer le logo ou widget Vortex Club sur votre site"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold tracking-wider uppercase text-slate-800 dark:text-neutral-200 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            title="Mon Compte, codes publicitaires et intégration logo"
           >
-            <Code2 className="w-3.5 h-3.5 text-red-600" />
-            <span>Intégrer Logo</span>
+            <User className="w-3.5 h-3.5 text-red-600" />
+            <span className="hidden sm:inline">Mon Compte</span>
+            <span className="sm:hidden">Compte</span>
           </button>
 
           <button

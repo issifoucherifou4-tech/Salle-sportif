@@ -48,6 +48,7 @@ export const AdStudioModal: React.FC<AdStudioModalProps> = ({
   const [copiedNotification, setCopiedNotification] = useState<boolean>(false);
   const [copiedScript, setCopiedScript] = useState<boolean>(false);
   const [copiedBicea, setCopiedBicea] = useState<boolean>(false);
+  const [copiedLeaderboard, setCopiedLeaderboard] = useState<boolean>(false);
 
   // Sync draft when opened or creative changes
   React.useEffect(() => {
@@ -562,24 +563,54 @@ Image: ${draft.imageUrl}
                 <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-600/40 text-emerald-900 dark:text-emerald-200">
                   <div className="flex items-center gap-2 mb-1 font-bold uppercase tracking-wider text-xs">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>2 Codes Publicitaires Actifs & Connectés</span>
+                    <span>3 Codes Publicitaires Actifs & Synchronisés</span>
                   </div>
                   <p className="text-[11px] leading-relaxed text-emerald-800 dark:text-emerald-300">
-                    Les codes de régie publicitaire (<strong>Bicea</strong> et <strong>Afders</strong>) sont injectés dans votre site avec le conteneur officiel <code className="bg-emerald-100 dark:bg-emerald-900/60 px-1 py-0.5 rounded font-mono font-bold">#container-50f9422018c65ee6331aa76135412a1a</code>.
+                    Les 3 configurations (Leaderboard 728×90, Slot Container et Tag Global) sont injectées et diffusées en temps réel sur <strong>SALLE SPORTIF</strong>.
                   </p>
                 </div>
 
-                {/* SCRIPT 2: BICEA (NOUVEAU CODE AJOUTÉ) */}
-                <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-2.5">
+                {/* SCRIPT 3: BICEA LEADERBOARD 728x90 IFRAME (NOUVEAU) */}
+                <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border-2 border-red-500/40 shadow-sm space-y-2.5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <span className="px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded bg-red-600 text-white font-athletic">
-                        Nouveau
+                        Ajouté au Compte
                       </span>
                       <label className="text-slate-900 dark:text-white font-bold uppercase tracking-wider text-[11px]">
-                        Régie Bicea : Script & Conteneur
+                        Bannière Leaderboard 728×90 (Bicea atOptions)
                       </label>
                     </div>
+                    <button
+                      onClick={() => {
+                        const code = `<script>\n  atOptions = {\n    'key' : '60b91ea64916a1564545e9078206932a',\n    'format' : 'iframe',\n    'height' : 90,\n    'width' : 728,\n    'params' : {}\n  };\n</script>\n<script src="https://bicea.org/22/60b91ea64916a1564545e9078206932a"></script>`;
+                        navigator.clipboard.writeText(code);
+                        setCopiedLeaderboard(true);
+                        setTimeout(() => setCopiedLeaderboard(false), 2500);
+                      }}
+                      className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+                    >
+                      {copiedLeaderboard ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedLeaderboard ? 'Copié !' : 'Copier'}</span>
+                    </button>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg bg-slate-900 text-amber-300 font-mono text-[10px] border border-slate-800 break-all leading-relaxed shadow-inner">
+                    <code>&lt;script&gt; atOptions = &#123; 'key': '60b91ea64916a1564545e9078206932a', 'format': 'iframe', 'height': 90, 'width': 728 &#125;; &lt;/script&gt;&lt;script src="https://bicea.org/22/60b91ea64916a1564545e9078206932a"&gt;&lt;/script&gt;</code>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>Emplacement : Sous la section Hero en bannière Leaderboard 728×90 responsive</span>
+                  </div>
+                </div>
+
+                {/* SCRIPT 2: BICEA CONTAINER */}
+                <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border border-slate-200 dark:border-white/10 shadow-sm space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-slate-900 dark:text-white font-bold uppercase tracking-wider text-[11px]">
+                      Régie Bicea : Slot Container #container-50f9422018c65ee6331aa76135412a1a
+                    </label>
                     <button
                       onClick={() => {
                         const biceaFullCode = `<script async="async" data-cfasync="false" src="https://bicea.org/21/50f9422018c65ee6331aa76135412a1a"></script>\n<div id="container-50f9422018c65ee6331aa76135412a1a"></div>`;
@@ -587,32 +618,15 @@ Image: ${draft.imageUrl}
                         setCopiedBicea(true);
                         setTimeout(() => setCopiedBicea(false), 2500);
                       }}
-                      className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+                      className="px-2 py-1 bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       {copiedBicea ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                      <span>{copiedBicea ? 'Copié !' : 'Copier Tout'}</span>
+                      <span>{copiedBicea ? 'Copié !' : 'Copier'}</span>
                     </button>
                   </div>
 
-                  <div className="space-y-1.5 font-mono text-[10px]">
-                    <div className="text-[10px] text-slate-500 dark:text-neutral-400 font-sans font-medium">
-                      1. Script chargé dans &lt;head&gt; :
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-slate-900 text-amber-300 border border-slate-800 break-all leading-relaxed shadow-inner">
-                      <code>&lt;script async="async" data-cfasync="false" src="https://bicea.org/21/50f9422018c65ee6331aa76135412a1a"&gt;&lt;/script&gt;</code>
-                    </div>
-
-                    <div className="text-[10px] text-slate-500 dark:text-neutral-400 font-sans font-medium pt-1">
-                      2. Conteneur actif dans la page :
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-slate-900 text-emerald-300 border border-slate-800 break-all leading-relaxed shadow-inner">
-                      <code>&lt;div id="container-50f9422018c65ee6331aa76135412a1a"&gt;&lt;/div&gt;</code>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>Intégré dans la section « Espace Publicitaire Bicea » au-dessus du pied de page</span>
+                  <div className="p-2.5 rounded-lg bg-slate-900 text-emerald-300 font-mono text-[10px] border border-slate-800 break-all leading-relaxed shadow-inner">
+                    <code>&lt;div id="container-50f9422018c65ee6331aa76135412a1a"&gt;&lt;/div&gt;</code>
                   </div>
                 </div>
 

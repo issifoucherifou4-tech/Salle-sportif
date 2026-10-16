@@ -12,20 +12,28 @@ import {
   Sparkles,
   LogIn,
   Layers,
+  User,
+  Wallet,
+  TrendingUp,
+  BarChart3,
+  BadgeCheck,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface LogoIntegrationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultTab?: 'logo_embed' | 'member_login';
+  defaultTab?: 'mon_compte' | 'logo_embed' | 'member_login';
+  onOpenStudio?: () => void;
 }
 
 export const LogoIntegrationModal: React.FC<LogoIntegrationModalProps> = ({
   isOpen,
   onClose,
-  defaultTab = 'logo_embed',
+  defaultTab = 'mon_compte',
+  onOpenStudio,
 }) => {
-  const [activeTab, setActiveTab] = useState<'logo_embed' | 'member_login'>(defaultTab);
+  const [activeTab, setActiveTab] = useState<'mon_compte' | 'logo_embed' | 'member_login'>(defaultTab);
   const [selectedVariant, setSelectedVariant] = useState<'crimson' | 'dark' | 'white'>('crimson');
   const [embedFormat, setEmbedFormat] = useState<'badge_html' | 'svg_code' | 'iframe_widget'>('badge_html');
   const [copied, setCopied] = useState<string | null>(null);
@@ -134,35 +142,229 @@ export const LogoIntegrationModal: React.FC<LogoIntegrationModalProps> = ({
 
         {/* Tab switch */}
         <div className="px-6 pt-5">
-          <div className="flex rounded-xl bg-slate-100 dark:bg-neutral-900 p-1 border border-slate-200 dark:border-white/10">
+          <div className="flex flex-wrap sm:flex-nowrap rounded-xl bg-slate-100 dark:bg-neutral-900 p-1 border border-slate-200 dark:border-white/10 gap-1">
+            <button
+              onClick={() => setActiveTab('mon_compte')}
+              className={`flex-1 py-2 px-3 text-xs font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                activeTab === 'mon_compte'
+                  ? 'bg-white text-slate-950 shadow-sm font-extrabold'
+                  : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
+              }`}
+            >
+              <Wallet className="w-3.5 h-3.5 text-red-600" />
+              <span>Mon Compte & Monétisation</span>
+              <span className="text-[10px] bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-400 font-black px-1.5 py-0.2 rounded-full">
+                3
+              </span>
+            </button>
             <button
               onClick={() => setActiveTab('logo_embed')}
-              className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              className={`flex-1 py-2 px-3 text-xs font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'logo_embed'
                   ? 'bg-white text-slate-950 shadow-sm font-extrabold'
                   : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
               }`}
             >
-              <Code2 className="w-4 h-4 text-red-600" />
-              <span>Intégrer le Logo / Widget sur votre site</span>
+              <Code2 className="w-3.5 h-3.5 text-red-600" />
+              <span>Intégrer Logo / Widget</span>
             </button>
             <button
               onClick={() => setActiveTab('member_login')}
-              className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              className={`flex-1 py-2 px-3 text-xs font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'member_login'
                   ? 'bg-white text-slate-950 shadow-sm font-extrabold'
                   : 'text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white'
               }`}
             >
-              <LogIn className="w-4 h-4 text-red-600" />
-              <span>Connexion Rapide Visiteur / Membre</span>
+              <LogIn className="w-3.5 h-3.5 text-red-600" />
+              <span>Espace Adhérent</span>
             </button>
           </div>
         </div>
 
         {/* Content Body */}
         <div className="p-6">
-          {activeTab === 'logo_embed' ? (
+          {activeTab === 'mon_compte' && (
+            <div className="space-y-5 text-xs">
+              {/* Account Profile Header Card */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-neutral-900 text-white shadow-md border border-neutral-800">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-white font-athletic text-xl font-bold shadow-md">
+                      CS
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-extrabold text-sm sm:text-base tracking-wide font-athletic uppercase">
+                          Cherifou Issifou
+                        </span>
+                        <BadgeCheck className="w-4 h-4 text-emerald-400" />
+                      </div>
+                      <div className="text-[11px] text-neutral-300 font-mono">
+                        issifoucherifou4@gmail.com
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-bold px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Compte & Monétisation Actifs</span>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4 pt-3 border-t border-white/10 text-center">
+                  <div className="p-2 rounded-xl bg-white/5">
+                    <div className="text-[10px] text-neutral-400 uppercase font-bold">Régies Liées</div>
+                    <div className="text-base font-athletic font-extrabold text-white mt-0.5">2 Régies</div>
+                  </div>
+                  <div className="p-2 rounded-xl bg-white/5">
+                    <div className="text-[10px] text-neutral-400 uppercase font-bold">Tags Actifs</div>
+                    <div className="text-base font-athletic font-extrabold text-emerald-400 mt-0.5">3 Tags</div>
+                  </div>
+                  <div className="p-2 rounded-xl bg-white/5">
+                    <div className="text-[10px] text-neutral-400 uppercase font-bold">Format Clé</div>
+                    <div className="text-base font-athletic font-extrabold text-amber-300 mt-0.5">728×90 Iframe</div>
+                  </div>
+                  <div className="p-2 rounded-xl bg-white/5">
+                    <div className="text-[10px] text-neutral-400 uppercase font-bold">Taux Visibilité</div>
+                    <div className="text-base font-athletic font-extrabold text-emerald-400 mt-0.5">99.4 %</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* NEW CODE ADDED: BICEA 728x90 IFRAME BANNER */}
+              <div className="p-4 rounded-xl border-2 border-red-500/40 bg-white dark:bg-neutral-900 shadow-sm space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-red-600 text-white font-athletic font-extrabold text-[10px] uppercase tracking-wider">
+                      Code Ajouté à Votre Compte
+                    </span>
+                    <span className="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wide">
+                      Bannière Leaderboard 728×90 (Bicea)
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      const snippet = `<script>\n  atOptions = {\n    'key' : '60b91ea64916a1564545e9078206932a',\n    'format' : 'iframe',\n    'height' : 90,\n    'width' : 728,\n    'params' : {}\n  };\n</script>\n<script src="https://bicea.org/22/60b91ea64916a1564545e9078206932a"></script>`;
+                      navigator.clipboard.writeText(snippet);
+                      setCopied('bicea_atoptions');
+                      setTimeout(() => setCopied(null), 2500);
+                    }}
+                    className="px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+                  >
+                    {copied === 'bicea_atoptions' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copied === 'bicea_atoptions' ? 'Copié !' : 'Copier le code'}</span>
+                  </button>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-900 text-slate-100 font-mono text-[10px] sm:text-[11px] leading-relaxed border border-slate-800 break-all overflow-x-auto">
+                  <span className="text-amber-400">&lt;script&gt;</span>{'\n'}
+                  {'  '}atOptions = {'{\n'}
+                  {'    '}'key' : '<span className="text-emerald-400 font-bold">60b91ea64916a1564545e9078206932a</span>',<br />
+                  {'    '}'format' : '<span className="text-sky-300">iframe</span>',<br />
+                  {'    '}'height' : 90,<br />
+                  {'    '}'width' : 728,<br />
+                  {'    '}'params' : {'{}'}<br />
+                  {'  '}{'}'};<br />
+                  <span className="text-amber-400">&lt;/script&gt;</span>{'\n'}
+                  <span className="text-amber-400">&lt;script</span> <span className="text-emerald-300">src</span>="https://bicea.org/22/60b91ea64916a1564545e9078206932a"<span className="text-amber-400">&gt;&lt;/script&gt;</span>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 dark:text-neutral-400 pt-1">
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                    <span>Intégré sur la page d'accueil sous forme de Leaderboard 728×90 responsive</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-slate-400">ID de zone: 60b91ea64916a1564545e9078206932a</span>
+                </div>
+              </div>
+
+              {/* OTHER CODES ATTACHED TO ACCOUNT */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Bicea Container Tag */}
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">
+                      Bicea Slot Container
+                    </span>
+                    <button
+                      onClick={() => {
+                        const snippet = `<script async="async" data-cfasync="false" src="https://bicea.org/21/50f9422018c65ee6331aa76135412a1a"></script>\n<div id="container-50f9422018c65ee6331aa76135412a1a"></div>`;
+                        navigator.clipboard.writeText(snippet);
+                        setCopied('bicea_container');
+                        setTimeout(() => setCopied(null), 2500);
+                      }}
+                      className="text-[10px] text-red-600 dark:text-red-400 font-bold hover:underline cursor-pointer flex items-center gap-1"
+                    >
+                      {copied === 'bicea_container' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                      <span>{copied === 'bicea_container' ? 'Copié' : 'Copier'}</span>
+                    </button>
+                  </div>
+                  <div className="p-2 rounded bg-slate-900 text-[10px] font-mono text-neutral-300 break-all">
+                    #container-50f9422018c65ee6331aa76135412a1a
+                  </div>
+                  <div className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>Actif au bas de page</span>
+                  </div>
+                </div>
+
+                {/* Afders Global Tag */}
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">
+                      Afders Tag Global
+                    </span>
+                    <button
+                      onClick={() => {
+                        const snippet = `<script data-cfasync="false" src="https://afders.org/1/169fa6c8c40e592dd678829f10e27da2"></script>`;
+                        navigator.clipboard.writeText(snippet);
+                        setCopied('afders_global');
+                        setTimeout(() => setCopied(null), 2500);
+                      }}
+                      className="text-[10px] text-red-600 dark:text-red-400 font-bold hover:underline cursor-pointer flex items-center gap-1"
+                    >
+                      {copied === 'afders_global' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                      <span>{copied === 'afders_global' ? 'Copié' : 'Copier'}</span>
+                    </button>
+                  </div>
+                  <div className="p-2 rounded bg-slate-900 text-[10px] font-mono text-neutral-300 break-all">
+                    https://afders.org/1/169fa6c8c40e592dd678829f10e27da2
+                  </div>
+                  <div className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>Actif dans l'en-tête &lt;head&gt;</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action row */}
+              <div className="flex flex-wrap items-center justify-between pt-2 gap-2">
+                <div className="text-[11px] text-slate-500 dark:text-neutral-400 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                  <span>Tous les tags sont associés à votre compte et diffusés en direct sur votre site.</span>
+                </div>
+
+                {onOpenStudio && (
+                  <button
+                    onClick={() => {
+                      onClose();
+                      onOpenStudio();
+                    }}
+                    className="px-3.5 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-950 font-bold uppercase tracking-wider text-[10px] flex items-center gap-1.5 cursor-pointer hover:bg-slate-800 transition-colors"
+                  >
+                    <span>Ouvrir Studio Publicitaire</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'logo_embed' && (
             <div className="space-y-6">
               {/* Visual preview card */}
               <div className="p-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-black/40 flex flex-col items-center justify-center text-center">
@@ -293,8 +495,10 @@ export const LogoIntegrationModal: React.FC<LogoIntegrationModalProps> = ({
                 </span>
               </div>
             </div>
-          ) : (
-            /* TAB 2: Member Quick Login / Onboarding */
+          )}
+
+          {/* TAB 3: Member Quick Login / Onboarding */}
+          {activeTab === 'member_login' && (
             <div className="space-y-5">
               {!loginSuccess ? (
                 <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs">
