@@ -47,6 +47,7 @@ export const AdStudioModal: React.FC<AdStudioModalProps> = ({
   const [compareMode, setCompareMode] = useState<boolean>(false);
   const [copiedNotification, setCopiedNotification] = useState<boolean>(false);
   const [copiedScript, setCopiedScript] = useState<boolean>(false);
+  const [copiedBicea, setCopiedBicea] = useState<boolean>(false);
 
   // Sync draft when opened or creative changes
   React.useEffect(() => {
@@ -556,23 +557,70 @@ Image: ${draft.imageUrl}
 
             {/* TAB 4: EXTERNAL AD SCRIPT MANAGEMENT */}
             {activeTab === 'script' && (
-              <div className="space-y-5 text-xs">
+              <div className="space-y-4 text-xs">
                 {/* Active Status Badge */}
-                <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-600/40 text-emerald-900 dark:text-emerald-200">
-                  <div className="flex items-center gap-2 mb-1.5 font-bold uppercase tracking-wider text-xs">
+                <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-600/40 text-emerald-900 dark:text-emerald-200">
+                  <div className="flex items-center gap-2 mb-1 font-bold uppercase tracking-wider text-xs">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Script Publicitaire Afders Actif</span>
+                    <span>2 Codes Publicitaires Actifs & Connectés</span>
                   </div>
                   <p className="text-[11px] leading-relaxed text-emerald-800 dark:text-emerald-300">
-                    Le code publicitaire a été injecté avec succès dans l'en-tête (<code>&lt;head&gt;</code>) de votre site. Il est chargé automatiquement à chaque visite.
+                    Les codes de régie publicitaire (<strong>Bicea</strong> et <strong>Afders</strong>) sont injectés dans votre site avec le conteneur officiel <code className="bg-emerald-100 dark:bg-emerald-900/60 px-1 py-0.5 rounded font-mono font-bold">#container-50f9422018c65ee6331aa76135412a1a</code>.
                   </p>
                 </div>
 
-                {/* Script Code Snippet */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-slate-700 dark:text-neutral-300 font-bold uppercase tracking-wider text-[11px]">
-                      Code du Script Intégré :
+                {/* SCRIPT 2: BICEA (NOUVEAU CODE AJOUTÉ) */}
+                <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border-2 border-red-500/30 dark:border-red-500/40 shadow-sm space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <span className="px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded bg-red-600 text-white font-athletic">
+                        Nouveau
+                      </span>
+                      <label className="text-slate-900 dark:text-white font-bold uppercase tracking-wider text-[11px]">
+                        Régie Bicea : Script & Conteneur
+                      </label>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const biceaFullCode = `<script async="async" data-cfasync="false" src="https://bicea.org/21/50f9422018c65ee6331aa76135412a1a"></script>\n<div id="container-50f9422018c65ee6331aa76135412a1a"></div>`;
+                        navigator.clipboard.writeText(biceaFullCode);
+                        setCopiedBicea(true);
+                        setTimeout(() => setCopiedBicea(false), 2500);
+                      }}
+                      className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+                    >
+                      {copiedBicea ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedBicea ? 'Copié !' : 'Copier Tout'}</span>
+                    </button>
+                  </div>
+
+                  <div className="space-y-1.5 font-mono text-[10px]">
+                    <div className="text-[10px] text-slate-500 dark:text-neutral-400 font-sans font-medium">
+                      1. Script chargé dans &lt;head&gt; :
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-slate-900 text-amber-300 border border-slate-800 break-all leading-relaxed shadow-inner">
+                      <code>&lt;script async="async" data-cfasync="false" src="https://bicea.org/21/50f9422018c65ee6331aa76135412a1a"&gt;&lt;/script&gt;</code>
+                    </div>
+
+                    <div className="text-[10px] text-slate-500 dark:text-neutral-400 font-sans font-medium pt-1">
+                      2. Conteneur actif dans la page :
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-slate-900 text-emerald-300 border border-slate-800 break-all leading-relaxed shadow-inner">
+                      <code>&lt;div id="container-50f9422018c65ee6331aa76135412a1a"&gt;&lt;/div&gt;</code>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>Intégré dans la section « Espace Publicitaire Bicea » au-dessus du pied de page</span>
+                  </div>
+                </div>
+
+                {/* SCRIPT 1: AFDERS (PREMIER CODE) */}
+                <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900/70 border border-slate-200 dark:border-white/10 shadow-sm space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-slate-800 dark:text-neutral-200 font-bold uppercase tracking-wider text-[11px]">
+                      Régie Afders : Tag Global
                     </label>
                     <button
                       onClick={() => {
@@ -580,61 +628,46 @@ Image: ${draft.imageUrl}
                         setCopiedScript(true);
                         setTimeout(() => setCopiedScript(false), 2500);
                       }}
-                      className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+                      className="px-2 py-1 bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-white rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       {copiedScript ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                       <span>{copiedScript ? 'Copié !' : 'Copier'}</span>
                     </button>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-[11px] border border-slate-800 break-all leading-relaxed shadow-inner">
+                  <div className="p-2.5 rounded-lg bg-slate-900 text-slate-100 font-mono text-[10px] border border-slate-800 break-all leading-relaxed shadow-inner">
                     <code>&lt;script data-cfasync="false" src="https://afders.org/1/169fa6c8c40e592dd678829f10e27da2"&gt;&lt;/script&gt;</code>
                   </div>
                 </div>
 
-                {/* Configuration Details */}
-                <div className="space-y-3 p-4 rounded-xl bg-white dark:bg-neutral-900/70 border border-slate-200 dark:border-white/10 shadow-sm">
-                  <div className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                    Paramètres Techniques du Tag
+                {/* Configuration & Parameters */}
+                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-neutral-900/50 border border-slate-200 dark:border-white/10 space-y-2 text-[11px]">
+                  <div className="font-bold uppercase tracking-wider text-slate-900 dark:text-white text-[11px]">
+                    Paramètres d'Optimisation Appliqués
                   </div>
-
-                  <div className="space-y-2 text-[11px] text-slate-600 dark:text-neutral-300">
-                    <div className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-slate-900 dark:text-white">data-cfasync="false" :</strong> Force l'exécution immédiate sans blocage Cloudflare RocketLoader.
-                      </div>
+                  <div className="space-y-1.5 text-slate-600 dark:text-neutral-300">
+                    <div className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                      <span><strong>async="async" & data-cfasync="false" :</strong> Chargement non bloquant et exécution directe sans interception.</span>
                     </div>
-
-                    <div className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-slate-900 dark:text-white">Emplacement &lt;head&gt; :</strong> Initialisation prioritaire avant le chargement des composants UI.
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-slate-900 dark:text-white">Réseau Afders :</strong> Diffusion des annonces, bannières et formats monétisation automatisés.
-                      </div>
+                    <div className="flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                      <span><strong>Conteneur DOM dédié :</strong> ID unique préservé pour que la régie injecte automatiquement la bannière publicitaire.</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Verification Check */}
-                <div className="pt-2">
-                  <div className="p-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-red-600" />
-                      <span className="font-semibold text-slate-800 dark:text-neutral-200">
-                        Vérification DOM en temps réel :
-                      </span>
-                    </div>
-                    <span className="font-mono text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-700">
-                      Tag Détecté
+                {/* Live Verification */}
+                <div className="p-3 rounded-lg bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700/50 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                    <span className="font-semibold text-slate-800 dark:text-neutral-200 text-[11px]">
+                      Vérification DOM en temps réel :
                     </span>
                   </div>
+                  <span className="font-mono text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-700">
+                    2 Tags & 1 Slot Connectés
+                  </span>
                 </div>
               </div>
             )}

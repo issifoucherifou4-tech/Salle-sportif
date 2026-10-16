@@ -11,6 +11,7 @@ import { AdStudioModal } from './components/AdStudioModal';
 import { PassBookingModal } from './components/PassBookingModal';
 import { GymHallsSection } from './components/GymHallsSection';
 import { LogoIntegrationModal } from './components/LogoIntegrationModal';
+import { BiceaAdSlot } from './components/BiceaAdSlot';
 import { DEFAULT_AD_CREATIVE } from './data/mockGymData';
 import { AdCreative, GymClass, MembershipPlan, GymHall } from './types/gym';
 import { Sliders, Sparkles, Check, ArrowUp, Code2 } from 'lucide-react';
@@ -181,32 +182,8 @@ export default function App() {
         {/* Membership Plans & Pricing */}
         <PricingSection onSelectPlan={handleSelectPlan} />
 
-        {/* Sponsored Network Ad Slot / Espace Publicitaire Partenaire */}
-        <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-100/80 dark:bg-white/5 p-4 transition-colors">
-            <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-neutral-400 mb-2">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-red-600" />
-                <span>Espace Publicitaire & Monétisation Partenaire</span>
-              </span>
-              <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-mono text-[10px] bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Script Afders Actif
-              </span>
-            </div>
-            {/* The actual ad container targeted by network scripts */}
-            <div id="afders-ad-slot" className="min-h-[80px] flex items-center justify-center rounded-xl bg-white dark:bg-black/40 border border-dashed border-slate-300 dark:border-white/15 p-4">
-              <div className="text-center">
-                <span className="text-xs font-bold text-slate-800 dark:text-neutral-200 block uppercase tracking-wide font-athletic">
-                  Emplacement Publicitaire Partenaire Réseau
-                </span>
-                <span className="text-[11px] text-slate-500 dark:text-neutral-400">
-                  Diffusion en temps réel synchronisée avec le tag <code className="text-red-600 font-mono">afders.org</code>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Sponsored Network Ad Slot (Bicea & Afders) */}
+        <BiceaAdSlot onOpenStudio={() => setIsStudioOpen(true)} />
       </main>
 
       {/* Footer */}
