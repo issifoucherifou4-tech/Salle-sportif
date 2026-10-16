@@ -1,0 +1,6 @@
+{
+  "name": "VORTEX CLUB | Premium Fitness Club & Ad Studio",
+  "description": "Site vitrine haute performance pour club de fitness haut de gamme et studio d'édition publicitaire interactive inspiré de DevVortex.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
